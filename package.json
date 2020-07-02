@@ -2,8 +2,9 @@
   "name": "graphql-demo",
   "version": "1.0.0",
   "description": "Node.js, Framework Express, Prisma, Typescript, Docker, deploy to cloud (Heroku or Google)",
-  "main": "server.js",
+  "main": "app.js",
   "dependencies": {
+    "@prisma/client": "^2.1.3",
     "@types/node-fetch": "^2.5.7",
     "coingecko-api": "^1.0.10",
     "express": "^4.17.1",
@@ -20,7 +21,7 @@
   },
   "scripts": {
     "build": "rimraf ./target && npx tsc",
-    "start": "npm run build && node target/server.js",
+    "start": "npm run build && node target/app.js",
     "dev": "nodemon"
   },
   "repository": {
