@@ -1,14 +1,27 @@
+/* =================== USAGE ===================
+
+    import {Coin, getAllCoins} from './coingecko-client';
+    const coinsApi = getAllCoins();
+
+ =============================================== */
+
 import fetch from 'node-fetch'
 
 const allCoinsUrl = 'https://api.coingecko.com/api/v3/coins/list'
 
-class Coin {
-    constructor(public id: string,
-                public symbol: string,
-                public name: string) {}
+export interface Coin {
+    id: string,
+    name: string | null,
+    symbol: string
 }
 
-export async function getAllCoins(): Promise<Coin[]> {
+async function getAllCoins(): Promise<Coin[]> {
     const response = await fetch(allCoinsUrl)
     return await response.json()
 }
+
+const gcClient = {
+    getAllCoins,
+}
+
+export default gcClient
