@@ -4,38 +4,65 @@ import {getAllCoins} from './coingecko-client'
 const port = 3000
 
 const app = express()
-const coinsApi = getAllCoins()
 
-app.use(updateIfDbEmpty)
-app.use(updateOnRequisition)
+app.use(requestLogger)
+app.use(updateOnParameter)
 
 app.get('/', (req: Request, res: Response) => {
     res.send('Hello user!')
 })
 
-app.get('/coins', (req: Request, res: Response) => {
-    coinsApi
-        .then(list => {
-            res.send(list)
+app.get('/update-coins', async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const updateStatus: string = await coinService.updateCoinsFromCG()
+            .then((value => `${value.length} coins has been updated.`))
+        const coinsFromDb: Coin[] = await coinService.getCoins()
+        res.send({
+            updateStatus: updateStatus,
+            coins: coinsFromDb
         })
-        .catch(reason => {
-            res.send(`There's an error: ${reason}`)
+    } catch (e) {
+        res.send({
+            error: errMsg(e)
         })
+    }
+    next()
 })
 
-// Update from CoinGecko if DB is empty
-function updateIfDbEmpty(req: Request, res: Response, next: NextFunction): void {
-    // If DB empty
-    // getCoins() and store into DB
+app.get('/get-coins', async (req: Request, res: Response) => {
+    const coinsFromDb = await coinService.getCoins()
+    res.send({
+        coins: coinsFromDb
+    })
+})
+
+function requestLogger(req: Request, res: Response, next: NextFunction) {
+    console.log(`Request at ${req.path} has been received.`)
     next()
+}
+
+function responseLogger(req: Request, res: Response, next: NextFunction) {
+    console.log(`Response at ${req.path} has been sent.`)
 }
 
 // Update if param = true
-function updateOnRequisition(req: Request, res: Response, next: NextFunction): void {
-    // If updateParam=true
-    // getCoins() and store into DB
+async function updateOnParameter(req: Request, res: Response, next: NextFunction): Promise<void> {
+    if (req.query.updateCoins === 'true') {
+        console.log('Update parameter is turned on. Coins will be updated.')
+        try {
+            await coinService.updateCoinsFromCG()
+        } catch (e) {
+            const error: string = errMsg(e)
+            console.error(error)
+            res.send(error)
+            return // return stops next() from executing
+        }
+    }
     next()
+    //return
 }
+
+app.use(responseLogger)
 
 app.listen(port, (err: Error) => {
     if (err) throw err
