@@ -1,0 +1,16 @@
+generator client {
+  provider = "prisma-client-js"
+  experimentalFeatures = ["transactionApi"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Coin {
+  cg_id  String  @unique
+  id     Int     @default(autoincrement()) @id
+  name   String?
+  symbol String
+}

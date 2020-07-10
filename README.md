@@ -23,14 +23,20 @@ Use these technologies: Node.js, Framework Express, Prisma, Typescript, Docker, 
 `docker rm crypto_currencies ` to remove container  
 
 ### Install node modules
-`npm i typescript express node-fetch @types/node-fetch` // installs modules globally (all profiles)  
+`npm i typescript express node-fetch` // installs modules globally (all profiles)  
 
 ### Install developer modules
-`npm i -D ts-node nodemon rimraf @types/node @types/express @prisma/cli` // installs modules for development (not required for production)  
+`npm i -D ts-node nodemon rimraf @types/node @types/express @types/node-fetch @prisma/cli` // installs modules for development (not required for production)  
 
 ### Configs
 `npm init` // creates a package.json    
 `npx tsc --init` // creates a tsconfig.json  
+
+### Setup database
+`npx prisma introspect` // (optional) if tables already exists this takes a look at a database and generates models (into schema.prisma) by existing tables 
+`npx prisma migrate save --name create-coin-table --experimental` //  prepares a migration by changes in schema.prisma
+`npx prisma migrate up --experimental` //  launches migration and creates | changes existing tables
+`npx prisma generate` // generates new Prisma Client to match new database schema 
 
 ## Start up server
 `npx ts-node` // without arguments (or specify .ts file in argument)
