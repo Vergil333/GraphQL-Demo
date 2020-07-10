@@ -18,9 +18,11 @@ Use these technologies: Node.js, Framework Express, Prisma, Typescript, Docker, 
 `git clone https://github.com/Vergil333/GraphQL-Demo`
 
 ### Create database
-`docker run --name crypto_currencies -e POSTGRES_DB=crypto_currencies -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=simplePass -p 5434:5432 -d postgres` to create container with database  
+`docker run --name crypto_currencies -e POSTGRES_DB=crypto_currencies -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=simplePass -p 5434:5432 -d postgres`  
+to create container with database    
   
-`docker rm crypto_currencies ` to remove container  
+`docker rm crypto_currencies`  
+to remove container  
 
 ### Install node modules
 `npm i typescript express node-fetch` // installs modules globally (all profiles)  
@@ -29,14 +31,32 @@ Use these technologies: Node.js, Framework Express, Prisma, Typescript, Docker, 
 `npm i -D ts-node nodemon rimraf @types/node @types/express @types/node-fetch @prisma/cli` // installs modules for development (not required for production)  
 
 ### Configs
-`npm init` // creates a package.json    
-`npx tsc --init` // creates a tsconfig.json  
+`npm init`  
+Creates a package.json  
+    
+`npx tsc --init`  
+Creates a tsconfig.json  
 
 ### Setup database
-`npx prisma introspect` // (optional) if tables already exists this takes a look at a database and generates models (into schema.prisma) by existing tables 
-`npx prisma migrate save --name create-coin-table --experimental` //  prepares a migration by changes in schema.prisma
-`npx prisma migrate up --experimental` //  launches migration and creates | changes existing tables
-`npx prisma generate` // generates new Prisma Client to match new database schema 
+`npx prisma introspect`  
+(optional) If tables already exists this takes a look at a database and generates models (into schema.prisma) by existing tables  
+
+`npx prisma migrate save --name create-coin-table --experimental`    
+Prepares a [migration] by changes in schema.prisma  
+  
+`npx prisma migrate up --experimental`
+Launches migration and creates | changes existing tables  
+
+`npx prisma generate`    
+Generates new Prisma Client to match new database schema  
+
+## Start up server as developer
+`npx ts-node`  
+Starts server with Nodemon  
 
 ## Start up server
-`npx ts-node` // without arguments (or specify .ts file in argument)
+`npx ts-node`  
+Without arguments (or specify .ts file in argument)  
+
+
+[migration]: https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-prisma-migrate-typescript-postgres
