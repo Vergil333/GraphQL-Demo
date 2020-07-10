@@ -8,14 +8,15 @@ function findAll(): Promise<Coin[]> {
 }
 
 async function isEmpty(): Promise<boolean> {
-    return await prisma.coin.count() === 0
+    const count: number = await prisma.coin.count()
+    return count === 0
 }
 
 function updateCoin(coin: CGCoin) {
     prisma.coin.update({
-        where: {gc_id: coin.id},
+        where: {cg_id: coin.id},
         data: {
-            gc_id: coin.id,
+            cg_id: coin.id,
             name: coin.name,
             symbol: coin.symbol,
         }
@@ -30,14 +31,14 @@ function updateCoin(coin: CGCoin) {
  */
 async function batchUpdateOrCreateCoins(coins: CGCoin[]): Promise<CGCoin[]> {
     coins.map((coin) => prisma.coin.upsert({
-            where: {gc_id: coin.id},
+            where: {cg_id: coin.id},
             update: {
-                gc_id: coin.id,
+                cg_id: coin.id,
                 name: coin.name,
                 symbol: coin.symbol,
             },
             create: {
-                gc_id: coin.id,
+                cg_id: coin.id,
                 name: coin.name,
                 symbol: coin.symbol,
             }
@@ -56,18 +57,19 @@ async function batchUpdateOrCreateCoins(coins: CGCoin[]): Promise<CGCoin[]> {
  */
 async function updateOrCreateCoin(coin: CGCoin): Promise<void> {
     await prisma.coin.upsert({
-        where: {gc_id: coin.id},
+        where: {cg_id: coin.id},
         update: {
-            gc_id: coin.id,
+            cg_id: coin.id,
             name: coin.name,
             symbol: coin.symbol,
         },
         create: {
-            gc_id: coin.id,
+            cg_id: coin.id,
             name: coin.name,
             symbol: coin.symbol,
         }
     })
+        .catch(reason => console.error(`Upsert error: ${reason}`))
 }
 
 function disconnect(): void {
@@ -76,8 +78,8 @@ function disconnect(): void {
 
 const repository = {
     findAll,
+    isEmpty,
     updateOrCreateCoin,
-    batchUpdateOrCreateCoins,
     disconnect,
 }
 

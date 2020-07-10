@@ -1,4 +1,4 @@
-import Coin, {repository} from "./database-repository"
+import Coin, {repository} from "./coin-repository"
 import cgClient, {CGCoin} from "./coingecko-client"
 
 function getCoins(): Promise<Coin[]> {
@@ -15,9 +15,24 @@ async function updateCoinsFromCG(): Promise<CGCoin[]> {
         .finally(() => repository.disconnect())
 }
 
+/**
+ * This is called only once at startup.
+ * Checks database and if empty, updates coins from CoinGecko.
+ */
+async function startupUpdate(): Promise<void> {
+    try {
+        const isEmpty = await repository.isEmpty()
+        if (isEmpty) await updateCoinsFromCG()
+            .then((value => `${value.length} coins have been updated.`))
+    } catch (e) {
+        console.error(e)
+    }
+}
+
 const coinService = {
     getCoins,
     updateCoinsFromCG,
+    startupUpdate,
 }
 
 export {coinService}
