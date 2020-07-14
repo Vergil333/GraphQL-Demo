@@ -5,14 +5,14 @@ function getCoins(): Promise<Coin[]> {
     return repository.findAll()
 }
 
-async function updateCoinsFromCG(): Promise<CGCoin[]> {
-    const coins: CGCoin[] = await cgClient.getAllCoins()
-    coins.map(async (coin) => {
-        await repository.updateOrCreateCoin(coin)
-    })
+async function updateCoinsFromCG(): Promise<Coin[]> {
+  const coins: CGCoin[] = await cgClient.getAllCoins()
 
-    return Promise.all(coins)
-        .finally(() => repository.disconnect())
+  const coinPromises = coins.map((coin) => {
+    return repository.updateOrCreateCoin(coin)
+  })
+
+  return Promise.all(coinPromises).finally(() => repository.disconnect())
 }
 
 /**

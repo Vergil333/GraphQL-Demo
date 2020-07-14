@@ -1,5 +1,5 @@
 import express, {NextFunction, Request, Response} from 'express'
-import {getAllCoins} from './coingecko-client'
+import Coin, { coinService } from './coin-service'
 
 const port = 3000
 
@@ -23,7 +23,7 @@ app.get('/update-coins', async (req: Request, res: Response, next: NextFunction)
             coins: coinsFromDb
         })
     } catch (e) {
-        res.send(new ErrorMsg(e))
+        res.send(new Error(e))
     }
     next()
 })
@@ -35,13 +35,13 @@ app.get('/get-coins', async (req: Request, res: Response, next: NextFunction) =>
             coins: coinsFromDb
         })
     } catch (e) {
-        res.send(new ErrorMsg(e))
+        res.send(new Error(e))
     }
     next()
 })
 
 app.get('/get-error', async (req: Request, res: Response, next: NextFunction) => {
-    res.send(new ErrorMsg('Some error...'))
+    res.send(new Error('Some error...'))
     next()
 })
 
@@ -62,8 +62,8 @@ async function updateOnParameter(req: Request, res: Response, next: NextFunction
         try {
             await coinService.updateCoinsFromCG()
         } catch (e) {
-            const error: ErrorMsg = new ErrorMsg(e)
-            console.error(error.error)
+            const error: Error = new Error(e)
+            console.error(error)
             res.send(error)
             return // return stops executing next()
         }
