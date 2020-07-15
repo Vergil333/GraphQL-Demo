@@ -7,6 +7,53 @@ function findAll(): Promise<Coin[]> {
     return prisma.coin.findMany()
 }
 
+function findManyById(cg_id: string): Promise<Coin[]> {
+    return prisma.coin.findMany({
+        where: {
+            OR: [
+                {
+                    cg_id: {
+                        contains: cg_id,
+                    }
+                },
+            ]
+        }
+    })
+}
+
+function findManyByName(name: string): Promise<Coin[]> {
+    return prisma.coin.findMany({
+        where: {
+            OR: [
+                {
+                    name: {
+                        contains: name,
+                    }
+                },
+            ]
+        }
+    })
+}
+
+function findManyByIdOrName(cg_id: string, name: string): Promise<Coin[]> {
+    return prisma.coin.findMany({
+        where: {
+            OR: [
+                {
+                    name: {
+                        contains: name,
+                    }
+                },
+                {
+                    cg_id: {
+                        contains: cg_id,
+                    }
+                },
+            ]
+        }
+    })
+}
+
 async function isEmpty(): Promise<boolean> {
     const count: number = await prisma.coin.count()
     return count === 0
@@ -78,9 +125,13 @@ function disconnect(): void {
 
 const repository = {
     findAll,
+    findManyById,
+    findManyByName,
+    findManyByIdOrName,
     isEmpty,
     updateOrCreateCoin,
     disconnect,
+    prisma,
 }
 
 export {repository}

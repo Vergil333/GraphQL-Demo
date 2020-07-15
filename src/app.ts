@@ -8,40 +8,11 @@ const app = express()
 app.use(requestLogger)
 app.use(updateOnParameter)
 
+app.use('/rest-api', restApi)
+app.use('/graph-api', graphApi)
+
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     res.send('Hello user!')
-    next()
-})
-
-app.get('/update-coins', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const updateStatus: string = await coinService.updateCoinsFromCG()
-            .then((value => `${value.length} coins have been updated.`))
-        const coinsFromDb: Coin[] = await coinService.getCoins()
-        res.send({
-            updateStatus: updateStatus,
-            coins: coinsFromDb
-        })
-    } catch (e) {
-        res.send(new ErrorMsg(e))
-    }
-    next()
-})
-
-app.get('/get-coins', async (req: Request, res: Response, next: NextFunction) => {
-    try {
-        const coinsFromDb = await coinService.getCoins()
-        res.send({
-            coins: coinsFromDb
-        })
-    } catch (e) {
-        res.send(new ErrorMsg(e))
-    }
-    next()
-})
-
-app.get('/get-error', async (req: Request, res: Response, next: NextFunction) => {
-    res.send(new ErrorMsg('Some error...'))
     next()
 })
 
