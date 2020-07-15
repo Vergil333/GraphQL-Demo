@@ -4,7 +4,7 @@ Use these technologies: Node.js, Framework Express, Prisma, Typescript, Docker, 
 
 - Implement simple GraphQL API
 - Query returns a list of crypto currencies
-- if the database of crypto currencies is empty, update it via REST call https://www.coingecko.com/api/documentations/v3#/coins/get_coins_list
+- if the database of crypto currencies is empty, update it via REST call from https://www.coingecko.com/api/documentations/v3#/coins/get_coins_list
 - Filter by ID
 - Fulltext search by name
 - Mutation to add new crypto currency with params id, symbol, name
@@ -43,10 +43,10 @@ Creates a tsconfig.json
 `npx prisma introspect`  
 (optional) If tables already exists this takes a look at a database and generates models (into schema.prisma) by existing tables  
 
-`npx prisma migrate save --name create-coin-table --experimental`    
+`npx prisma migrate save --name create-coin-table --experimental`  
 Prepares a [migration] by changes in schema.prisma  
   
-`npx prisma migrate up --experimental`
+`npx prisma migrate up --experimental`  
 Launches migration and creates | changes existing tables  
 
 `npx prisma generate`    

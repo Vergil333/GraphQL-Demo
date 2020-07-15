@@ -10,13 +10,9 @@ function findAll(): Promise<Coin[]> {
 function findManyById(cg_id: string): Promise<Coin[]> {
     return prisma.coin.findMany({
         where: {
-            OR: [
-                {
-                    cg_id: {
-                        contains: cg_id,
-                    }
-                },
-            ]
+            cg_id: {
+                contains: cg_id,
+            }
         }
     })
 }
@@ -24,13 +20,9 @@ function findManyById(cg_id: string): Promise<Coin[]> {
 function findManyByName(name: string): Promise<Coin[]> {
     return prisma.coin.findMany({
         where: {
-            OR: [
-                {
-                    name: {
-                        contains: name,
-                    }
-                },
-            ]
+            name: {
+                contains: name,
+            }
         }
     })
 }

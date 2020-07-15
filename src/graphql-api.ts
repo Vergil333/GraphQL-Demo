@@ -5,7 +5,6 @@ import {coinService} from './coin-service'
 
 const router = express.Router()
 
-//coin(id: ID!): Coin
 const schema = buildSchema(`
   type Query {
     coins(cg_id: String, name: String): [Coin]
@@ -24,7 +23,6 @@ interface request {
 }
 
 const root = {
-    //coins: async () => coinService.getAllCoins(),
     coins: async ({cg_id, name}: request) => coinService.getCoinsByIdOrName(cg_id, name),
 }
 
