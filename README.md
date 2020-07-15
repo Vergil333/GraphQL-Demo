@@ -25,10 +25,12 @@ to create container with database
 to remove container  
 
 ### Install node modules
-`npm i typescript express node-fetch` // installs modules globally (all profiles)  
+`npm i typescript express node-fetch graphql express-graphql`  
+Installs modules globally (all profiles)  
 
 ### Install developer modules
-`npm i -D ts-node nodemon rimraf @types/node @types/express @types/node-fetch @prisma/cli` // installs modules for development (not required for production)  
+`npm i -D ts-node nodemon rimraf @types/node @types/express @types/node-fetch @types/graphql @prisma/cli`  
+Installs modules for development (not required for production)  
 
 ### Configs
 `npm init`  
@@ -51,8 +53,8 @@ Launches migration and creates | changes existing tables
 Generates new Prisma Client to match new database schema  
 
 ## Start up server as developer
-`npx ts-node`  
-Starts server with Nodemon  
+`npm run dev`  
+Runs script from package.json to start with Nodemon  
 
 ## Start up server
 `npx ts-node`  
