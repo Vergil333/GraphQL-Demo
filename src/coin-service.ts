@@ -14,11 +14,9 @@ function getCoinsByIdOrName(id?: string, name?: string): Promise<Coin[]> {
 
 async function updateCoinsFromCG(): Promise<Coin[]> {
     const coins: CGCoin[] = await cgClient.getAllCoins()
-    coins.map(async (coin) => {
-        await repository.updateOrCreateCoin(coin)
-    })
+    const coinPromises = coins.map((coin) => repository.updateOrCreateCoin(coin))
 
-    return Promise.all(coins)
+    return Promise.all(coinPromises)
         .finally(() => repository.disconnect())
 }
 
@@ -29,8 +27,11 @@ async function updateCoinsFromCG(): Promise<Coin[]> {
 async function startupUpdate(): Promise<void> {
     try {
         const isEmpty = await repository.isEmpty()
-        if (isEmpty) await updateCoinsFromCG()
-            .then((value => `${value.length} coins have been updated.`))
+        if (isEmpty) {
+            const updateStatus: string = await updateCoinsFromCG()
+                .then((value => `${value.length} coins have been updated.`))
+            console.log(updateStatus)
+        }
     } catch (e) {
         console.error(e)
     }

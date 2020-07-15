@@ -102,21 +102,27 @@ async function batchUpdateOrCreateCoins(coins: CGCoin[]): Promise<CGCoin[]> {
  * https://github.com/prisma/prisma-client-js/issues/709
  * @param coin
  */
-async function updateOrCreateCoin(coin: CGCoin): Promise<void> {
-    await prisma.coin.upsert({
-        where: {cg_id: coin.id},
-        update: {
-            cg_id: coin.id,
-            name: coin.name,
-            symbol: coin.symbol,
-        },
-        create: {
-            cg_id: coin.id,
-            name: coin.name,
-            symbol: coin.symbol,
-        }
-    })
-        .catch(reason => console.error(`Upsert error: ${reason}`))
+async function updateOrCreateCoin(coin: CGCoin): Promise<Coin> {
+    try {
+        let result = await prisma.coin.upsert({
+            where: {cg_id: coin.id},
+            update: {
+                cg_id: coin.id,
+                name: coin.name,
+                symbol: coin.symbol,
+            },
+            create: {
+                cg_id: coin.id,
+                name: coin.name,
+                symbol: coin.symbol,
+            }
+        })
+
+        return result
+    } catch(e) {
+        console.error(`Upsert error: ${e}`)
+        throw e
+    }
 }
 
 function disconnect(): void {
