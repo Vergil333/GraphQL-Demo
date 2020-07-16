@@ -16,7 +16,6 @@ router.get('/update-coins', async (req: Request, res: Response, next: NextFuncti
     } catch (e) {
         res.send(new ErrorMsg(e))
     }
-    next()
 })
 
 router.get('/get-coins', async (req: Request, res: Response, next: NextFunction) => {
@@ -28,12 +27,10 @@ router.get('/get-coins', async (req: Request, res: Response, next: NextFunction)
     } catch (e) {
         res.send(new ErrorMsg(e))
     }
-    next()
 })
 
 router.get('/get-error', async (req: Request, res: Response, next: NextFunction) => {
     res.send(new ErrorMsg('Some error...'))
-    next()
 })
 
 export default router

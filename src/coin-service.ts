@@ -5,6 +5,10 @@ function getAllCoins(): Promise<Coin[]> {
     return repository.findAll()
 }
 
+function createCoin(coin: CGCoin): Promise<Coin> {
+    return repository.createCoin(coin)
+}
+
 function getCoinsByIdOrName(id?: string, name?: string): Promise<Coin[]> {
     if (id && name) return repository.findManyByIdOrName(id, name)
     if (id) return repository.findManyById(id)
@@ -40,9 +44,11 @@ async function startupUpdate(): Promise<void> {
 const coinService = {
     getAllCoins,
     getCoinsByIdOrName,
+    createCoin,
     updateCoinsFromCG,
     startupUpdate,
 }
 
+export {CGCoin}
 export {coinService}
 export default Coin

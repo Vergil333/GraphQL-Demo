@@ -51,6 +51,17 @@ async function isEmpty(): Promise<boolean> {
     return count === 0
 }
 
+function createCoin(coin: CGCoin): Promise<Coin> {
+    console.log(coin)
+    return prisma.coin.create({
+        data: {
+            cg_id: coin.id,
+            name: coin.name,
+            symbol: coin.symbol,
+        }
+    })
+}
+
 function updateCoin(coin: CGCoin) {
     prisma.coin.update({
         where: {cg_id: coin.id},
@@ -96,7 +107,7 @@ async function batchUpdateOrCreateCoins(coins: CGCoin[]): Promise<CGCoin[]> {
  */
 async function updateOrCreateCoin(coin: CGCoin): Promise<Coin> {
     try {
-        let result = await prisma.coin.upsert({
+        return await prisma.coin.upsert({
             where: {cg_id: coin.id},
             update: {
                 cg_id: coin.id,
@@ -109,8 +120,6 @@ async function updateOrCreateCoin(coin: CGCoin): Promise<Coin> {
                 symbol: coin.symbol,
             }
         })
-
-        return result
     } catch(e) {
         console.error(`Upsert error: ${e}`)
         throw e
@@ -127,6 +136,7 @@ const repository = {
     findManyByName,
     findManyByIdOrName,
     isEmpty,
+    createCoin,
     updateOrCreateCoin,
     disconnect,
     prisma,

@@ -12,7 +12,7 @@ const allCoinsUrl = 'https://api.coingecko.com/api/v3/coins/list'
 export interface CGCoin {
     id: string,
     name: string | null,
-    symbol: string
+    symbol: string,
 }
 
 async function getAllCoins(): Promise<CGCoin[]> {
