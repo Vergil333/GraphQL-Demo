@@ -41,31 +41,6 @@ function createCoin(newCoin: NewCoin): Promise<Coin> {
 }
 
 /**
- * prisma.transaction is an experimental feature that should upsert all queries in single transaction.
- * For some reason it does not work here!
- * @param coins
- * @return Coin[]
- */
-async function batchUpdateOrCreateCoins(coins: CGCoin[]): Promise<CGCoin[]> {
-    coins.map((coin) => prisma.coin.upsert({
-            where: {cg_id: coin.id},
-            update: {
-                cg_id: coin.id,
-                name: coin.name,
-                symbol: coin.symbol,
-            },
-            create: {
-                cg_id: coin.id,
-                name: coin.name,
-                symbol: coin.symbol,
-            }
-        })
-    )
-
-    return await prisma.transaction(coins)
-}
-
-/**
  * Existing coins will be updated (by unique ID from CG) and non-existing coins will be created.
  *
  * Prisma currently does not return callback if record was inserted or updated.
