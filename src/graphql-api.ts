@@ -1,40 +1,37 @@
 import express from 'express'
 import {graphqlHTTP} from 'express-graphql'
 import {buildSchema} from 'graphql'
-import {CGCoin, coinService} from './coin-service'
+import {NewCoin, coinService} from './coin-service'
 
 const router = express.Router()
 
-const schema = buildSchema(`
-  input CGCoin {
-    cg_id: String!
-    name: String
-    symbol: String!
-  }
-   
+const schema = buildSchema(`   
   type Coin {
     cg_id: String!
     name: String
     symbol: String!
-  } 
+  }
+     
+  input NewCoin {
+    cg_id: String!
+    name: String
+    symbol: String!
+  }
   
   type Query {
-    coins(cg_id: String, name: String): [Coin]
+    coin(cg_id: String): Coin
+    coins(name: String): [Coin]
   }
   
   type Mutation {
-    createCoin(input: CGCoin!): Coin
+    createCoin(input: NewCoin!): Coin
   }
 `)
 
-interface request {
-    cg_id: string,
-    name: string,
-}
-
 const root = {
-    coins: async (req: request) => coinService.getCoinsByIdOrName(req.cg_id, req.name),
-    createCoin: async (input: CGCoin) => coinService.createCoin(input),
+    coin: async (arg: { cg_id: string }) => await coinService.getCoinById(arg.cg_id).then(value => value),
+    coins: async (arg: { name: string }) => await coinService.getCoinsByName(arg.name).then(value => value),
+    createCoin: async (arg: { input: NewCoin }) => await coinService.createCoin(arg.input).then(value => value),
 }
 
 router.use('/graphiql', graphqlHTTP({

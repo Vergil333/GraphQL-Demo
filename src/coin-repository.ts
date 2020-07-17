@@ -3,16 +3,19 @@ import {CGCoin} from './coingecko-client'
 
 const prisma = new PrismaClient()
 
+async function isEmpty(): Promise<boolean> {
+    const count: number = await prisma.coin.count()
+    return count === 0
+}
+
 function findAll(): Promise<Coin[]> {
     return prisma.coin.findMany()
 }
 
-function findManyById(cg_id: string): Promise<Coin[]> {
-    return prisma.coin.findMany({
+function findOneById(cg_id: string): Promise<Coin|null> {
+    return prisma.coin.findOne({
         where: {
-            cg_id: {
-                contains: cg_id,
-            }
+            cg_id: cg_id
         }
     })
 }
@@ -27,48 +30,12 @@ function findManyByName(name: string): Promise<Coin[]> {
     })
 }
 
-function findManyByIdOrName(cg_id: string, name: string): Promise<Coin[]> {
-    return prisma.coin.findMany({
-        where: {
-            OR: [
-                {
-                    name: {
-                        contains: name,
-                    }
-                },
-                {
-                    cg_id: {
-                        contains: cg_id,
-                    }
-                },
-            ]
-        }
-    })
-}
-
-async function isEmpty(): Promise<boolean> {
-    const count: number = await prisma.coin.count()
-    return count === 0
-}
-
-function createCoin(coin: CGCoin): Promise<Coin> {
-    console.log(coin)
+function createCoin(newCoin: NewCoin): Promise<Coin> {
     return prisma.coin.create({
         data: {
-            cg_id: coin.id,
-            name: coin.name,
-            symbol: coin.symbol,
-        }
-    })
-}
-
-function updateCoin(coin: CGCoin) {
-    prisma.coin.update({
-        where: {cg_id: coin.id},
-        data: {
-            cg_id: coin.id,
-            name: coin.name,
-            symbol: coin.symbol,
+            cg_id: newCoin.cg_id,
+            name: newCoin.name,
+            symbol: newCoin.symbol,
         }
     })
 }
@@ -131,10 +98,9 @@ function disconnect(): void {
 }
 
 const repository = {
+    findOneById,
     findAll,
-    findManyById,
     findManyByName,
-    findManyByIdOrName,
     isEmpty,
     createCoin,
     updateOrCreateCoin,
@@ -142,5 +108,11 @@ const repository = {
     prisma,
 }
 
-export {repository}
-export default Coin
+
+interface NewCoin {
+    cg_id: string,
+    name: string | null,
+    symbol: string,
+}
+
+export {repository, Coin, NewCoin}

@@ -1,17 +1,19 @@
-import Coin, {repository} from "./coin-repository"
+import { Coin, NewCoin, repository} from "./coin-repository"
 import cgClient, {CGCoin} from "./coingecko-client"
 
 function getAllCoins(): Promise<Coin[]> {
     return repository.findAll()
 }
 
-function createCoin(coin: CGCoin): Promise<Coin> {
-    return repository.createCoin(coin)
+function createCoin(newCoin: NewCoin): Promise<Coin> {
+    return repository.createCoin(newCoin)
 }
 
-function getCoinsByIdOrName(id?: string, name?: string): Promise<Coin[]> {
-    if (id && name) return repository.findManyByIdOrName(id, name)
-    if (id) return repository.findManyById(id)
+function getCoinById(id: string): Promise<Coin|null> {
+    return repository.findOneById(id)
+}
+
+function getCoinsByName(name?: string): Promise<Coin[]> {
     if (name) return repository.findManyByName(name)
     return repository.findAll()
 }
@@ -42,13 +44,13 @@ async function startupUpdate(): Promise<void> {
 }
 
 const coinService = {
+    getCoinById,
     getAllCoins,
-    getCoinsByIdOrName,
+    getCoinsByName,
     createCoin,
     updateCoinsFromCG,
     startupUpdate,
 }
 
-export {CGCoin}
-export {coinService}
+export {coinService, NewCoin, CGCoin}
 export default Coin
