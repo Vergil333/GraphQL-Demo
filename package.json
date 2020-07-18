@@ -1,6 +1,9 @@
 {
   "name": "graphql-demo",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.x"
+  },
   "description": "Node.js, Framework Express, Prisma, Typescript, Docker, deploy to cloud (Heroku or Google)",
   "main": "app.js",
   "dependencies": {
