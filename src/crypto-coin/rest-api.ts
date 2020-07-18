@@ -1,7 +1,17 @@
+/* =================== USAGE ===================
+
+    import restApi from './rest-api'
+    app.use('/rest-api', restApi)
+
+ =============================================== */
+
 import express, {NextFunction, Request, Response} from 'express'
 import Coin, {coinService} from "./coin-service"
-import ErrorMsg from './error-wrapper'
+import ErrorMsg from '../error-wrapper'
 
+/**
+ * This REST API serves only for functionality testing and is not required for production.
+ */
 const router = express.Router()
 
 router.get('/update-coins', async (req: Request, res: Response, next: NextFunction) => {
