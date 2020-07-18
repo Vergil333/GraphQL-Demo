@@ -23,7 +23,7 @@
     "typescript": "^3.9.5"
   },
   "scripts": {
-    "build": "rimraf ./target && npx tsc",
+    "build": "npx rimraf ./target && npx tsc",
     "start": "npm run build && node target/app.js",
     "dev": "nodemon"
   },
