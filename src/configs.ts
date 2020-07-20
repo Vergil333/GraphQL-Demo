@@ -1,10 +1,10 @@
-import dotenv from 'dotenv'
+let requiredEnvs = [
+    'NODE_ENV',
+    'PORT',
+]
 
-const result = dotenv.config();
-
-if (result.error) {
-    throw result.error;
-}
+let unsetEnvs = requiredEnvs.filter((env) => process.env[env] === undefined)
+if (unsetEnvs.length > 0) throw new Error(`Required env variables are not set: [${unsetEnvs.join(', ')}]`)
 
 const isDevelopment: boolean = process.env.NODE_ENV === 'development'
 const port: number = parseInt(process.env.PORT || '3000')
@@ -16,8 +16,8 @@ export const server = {
     updateParameter,
 }
 
-const graphqlApiUrl: string = process.env.GRAPHQL_API_URL || '//graph-api'
-const graphiqlUrl: string = process.env.GRAPHQL_GRAPHIQL_URL || '//graphiql'
+const graphqlApiUrl: string = process.env.GRAPHQL_API_URL || '/graphql-api'
+const graphiqlUrl: string = process.env.GRAPHQL_GRAPHIQL_URL || '/graphiql'
 
 export const graphqlEndpoints = {
     graphqlApiUrl,

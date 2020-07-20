@@ -11,10 +11,6 @@ app.use(updateOnParameter)
 
 app.use(graphqlEndpoints.graphqlApiUrl, graphApi)
 if (server.isDevelopment) app.use(restEndpoints.restApiUrl, restApi)
-else {
-    console.log(`process.env.NODE_ENV = ${process.env.NODE_ENV}`)
-    console.log(`isDevelopment = ${server.isDevelopment}`)
-}
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     const fullHostUrl = `${req.protocol}://${req.headers.host}`
