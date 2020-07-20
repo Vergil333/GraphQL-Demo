@@ -1,4 +1,5 @@
 /* =================== USAGE ===================
+    This REST API serves only for functionality testing and is not required for production.
 
     import restApi from './rest-api'
     app.use('/rest-api', restApi)
@@ -7,14 +8,12 @@
 
 import express, {NextFunction, Request, Response} from 'express'
 import Coin, {coinService} from "./coin-service"
+import {restEndpoints} from "../configs";
 import ErrorMsg from '../error-wrapper'
 
-/**
- * This REST API serves only for functionality testing and is not required for production.
- */
 const router = express.Router()
 
-router.get('/update-coins', async (req: Request, res: Response, next: NextFunction) => {
+router.get(restEndpoints.restUpdate, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const updateStatus: string = await coinService.updateCoinsFromCG()
             .then((value => `${value.length} coins have been updated.`))
@@ -28,7 +27,7 @@ router.get('/update-coins', async (req: Request, res: Response, next: NextFuncti
     }
 })
 
-router.get('/get-coins', async (req: Request, res: Response, next: NextFunction) => {
+router.get(restEndpoints.restGet, async (req: Request, res: Response, next: NextFunction) => {
     try {
         const coinsFromDb = await coinService.getAllCoins()
         res.send({
@@ -39,7 +38,7 @@ router.get('/get-coins', async (req: Request, res: Response, next: NextFunction)
     }
 })
 
-router.get('/get-error', async (req: Request, res: Response, next: NextFunction) => {
+router.get(restEndpoints.restError, async (req: Request, res: Response, next: NextFunction) => {
     res.send(new ErrorMsg('Some error...'))
 })
 
