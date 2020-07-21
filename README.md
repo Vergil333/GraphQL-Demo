@@ -17,7 +17,7 @@ Use these technologies: Node.js, Framework Express, Prisma, Typescript, Docker, 
 - database for storing coins
 - NPM (Node Package Manager) 
 - Heroku CLI for deploying to cloud
-- setup system variables for database, environment (production, development)
+- system variables for database, environment (production, development)
   
 ---
 

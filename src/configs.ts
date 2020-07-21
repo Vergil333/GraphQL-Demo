@@ -1,9 +1,10 @@
 /**
- * First check if required variables are set on the server's machine (Linux, Windows, OSx, IDE,...).
+ * First check if required variables are set in the environment (Linux, Windows, OSx, IDE, Dotenv,...).
  */
 let requiredEnvs = [
     'NODE_ENV',
     'PORT',
+    'DATABASE_URL',
 ]
 
 let unsetEnvs = requiredEnvs.filter((env) => process.env[env] === undefined)
