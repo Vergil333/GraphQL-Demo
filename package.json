@@ -26,7 +26,7 @@
     "typescript": "^3.9.5"
   },
   "scripts": {
-    "build": "npx rimraf ./target && npx prisma generate && npx tsc",
+    "build": "npx rimraf ./target && npx tsc && npx prisma generate",
     "start": "npm run build && node target/app.js",
     "dev": "nodemon"
   },
