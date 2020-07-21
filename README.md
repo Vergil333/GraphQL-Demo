@@ -12,7 +12,31 @@ Use these technologies: Node.js, Framework Express, Prisma, Typescript, Docker, 
 
 ---
 
-## Initialization  
+## Prerequisites  
+- a brain
+- database for storing coins
+- NPM (Node Package Manager) 
+- Heroku CLI for deploying to cloud
+- setup system variables for database, environment (production, development)
+  
+---
+
+## Initialization    
+  
+### Clone this git repo
+`git clone https://github.com/Vergil333/GraphQL-Demo`
+
+### Create database
+`docker run --name crypto_currencies -e POSTGRES_DB=crypto_currencies -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=simplePass -p 5434:5432 -d postgres`  
+to create container with database    
+  
+`docker rm crypto_currencies`  
+to remove container  
+
+---
+
+## Project building  
+These are steps I had to take to create this project.
   
 ### Clone this git repo
 `git clone https://github.com/Vergil333/GraphQL-Demo`
@@ -54,7 +78,7 @@ Generates new Prisma Client to match new database schema
 
 ## Start up server as developer
 `npm run dev`  
-Runs script from package.json to start with Nodemon  
+Runs a script from package.json to start with Nodemon  
 
 ## Start up server
 `npx ts-node`  
