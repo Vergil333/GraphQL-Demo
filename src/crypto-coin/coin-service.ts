@@ -40,6 +40,7 @@ async function startupUpdate(): Promise<void> {
         }
     } catch (e) {
         console.error(e)
+        throw new Error(e)
     }
 }
 
