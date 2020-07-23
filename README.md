@@ -89,9 +89,9 @@ Variables
   }
 }
 ```
-
+![image](https://i.imgur.com/hKj6XT0.png)
 ---
-## Building project  
+## Building steps  
 These are steps I had to take to create this project.
 
 ###### Create database
