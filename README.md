@@ -13,57 +13,67 @@ Use these technologies: Node.js, Framework Express, Prisma, Typescript, Docker, 
 ---
 
 ## Prerequisites  
-- a brain
-- database for storing coins
+- docker (for creating our database)
 - NPM (Node Package Manager) 
-- Heroku CLI for deploying to cloud
-- system variables for database, environment (production, development)
-  
+- set required environment variables
+- Heroku CLI for deploying app to cloud
 ---
+## Quick start or TL;DR  
 
-## Initialization    
-  
-### Clone this git repo
+###### Create database
+`docker run --name crypto_currencies -e POSTGRES_DB=crypto_currencies -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=simplePass -p 5434:5432 -d postgres`  
+creates postgres container with database and user running at port 5434   
+(`docker rm crypto_currencies` to remove container)  
+
+###### Clone this git repo
+`git clone https://github.com/Vergil333/GraphQL-Demo`  
+
+###### NPM install
+`cd GraphQL-Demo`  
+`npm install`  
+install all dependencies from package.json  
+
+###### Clone this git repo  
 `git clone https://github.com/Vergil333/GraphQL-Demo`
 
-### Create database
-`docker run --name crypto_currencies -e POSTGRES_DB=crypto_currencies -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=simplePass -p 5434:5432 -d postgres`  
-to create container with database    
+###### Set environment variables
+`export PORT=3000`  
+`export NODE_ENV=development`    
+`export DATABASE_URL=postgresql://admin:simplePass@localhost:5434/crypto_currencies?schema=public`  
+in Windows replace `export` by `SET`.  
   
-`docker rm crypto_currencies`  
-to remove container  
-
+###### Create DB table from Prisma Model
+`npx prisma migrate save --name create-coin-table --experimental`  
+`npx prisma migrate up --experimental`  
 ---
 
-## Project building  
+## Building project  
 These are steps I had to take to create this project.
-  
-### Clone this git repo
-`git clone https://github.com/Vergil333/GraphQL-Demo`
 
-### Create database
+###### Create database
 `docker run --name crypto_currencies -e POSTGRES_DB=crypto_currencies -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=simplePass -p 5434:5432 -d postgres`  
 to create container with database    
   
 `docker rm crypto_currencies`  
-to remove container  
+to remove container if you mess something up  
 
-### Install node modules
-`npm i typescript express node-fetch graphql express-graphql`  
+###### Initialize package.json
+`npm init`  
+
+###### Install node modules
+`npm i typescript express node-fetch graphql express-graphql rimraf @types/node @types/express @types/node-fetch @types/graphql @prisma/cli`  
 Installs modules globally (all profiles)  
 
-### Install developer modules
-`npm i -D ts-node nodemon rimraf @types/node @types/express @types/node-fetch @types/graphql @prisma/cli`  
+###### Install developer modules
+`npm i -D ts-node nodemon`  
 Installs modules for development (not required for production)  
 
-### Configs
-`npm init`  
-Creates a package.json  
-    
+###### Configs
 `npx tsc --init`  
-Creates a tsconfig.json  
+Creates a tsconfig.json and then configure this file.  
+Also configure package.json (scripts).  
 
-### Setup database
+###### Setup database
 `npx prisma introspect`  
 (optional) If tables already exists this takes a look at a database and generates models (into schema.prisma) by existing tables  
 
@@ -71,18 +81,18 @@ Creates a tsconfig.json
 Prepares a [migration] by changes in schema.prisma  
   
 `npx prisma migrate up --experimental`  
-Launches migration and creates | changes existing tables  
+Launches migration and creates | changes existing tables.  
 
 `npx prisma generate`    
-Generates new Prisma Client to match new database schema  
+Generates new Prisma Client to match new database schema.  
 
-## Start up server as developer
+## Start server (development)
 `npm run dev`  
-Runs a script from package.json to start with Nodemon  
+Runs a script from package.json to start with Nodemon.  
 
-## Start up server
-`npx ts-node`  
-Without arguments (or specify .ts file in argument)  
+## Start server (production)
+`npm start`  
+Without arguments (or specify .ts file in argument).  
 
 
 [migration]: https://www.prisma.io/docs/getting-started/setup-prisma/start-from-scratch-prisma-migrate-typescript-postgres

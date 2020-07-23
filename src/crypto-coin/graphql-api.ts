@@ -1,7 +1,7 @@
 import express from 'express'
 import {graphqlHTTP} from 'express-graphql'
 import {buildSchema} from 'graphql'
-import {graphqlEndpoints} from "../configs";
+import {server} from "../configs";
 import {NewCoin, coinService} from './coin-service'
 
 const router = express.Router()
@@ -35,15 +35,10 @@ const root = {
     createCoin: async (arg: { input: NewCoin }) => await coinService.createCoin(arg.input).then(value => value),
 }
 
-router.use(graphqlEndpoints.graphiqlUrl, graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-}))
-
 router.use('/', graphqlHTTP({
     schema: schema,
     rootValue: root,
+    graphiql: server.isDevelopment,
 }))
 
 export default router

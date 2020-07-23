@@ -14,17 +14,16 @@ if (server.isDevelopment) app.use(restEndpoints.restApiUrl, restApi)
 
 app.get('/', (req: Request, res: Response, next: NextFunction) => {
     const fullHostUrl = `${req.protocol}://${req.headers.host}`
-    const fullGraphiql = graphqlEndpoints.graphqlApiUrl+graphqlEndpoints.graphiqlUrl
     const fullRestGet = restEndpoints.restApiUrl+restEndpoints.restGet
     const fullRestUpdate = restEndpoints.restApiUrl+restEndpoints.restUpdate
     const fullRestError = restEndpoints.restApiUrl+restEndpoints.restError
 
     res.send(`Hello user!
     <ul>
-        <li>you can make a GraphQL requests at url - ${fullHostUrl}${graphqlEndpoints.graphqlApiUrl}</li>
+        <li>you can make a GraphQL requests following url - ${fullHostUrl}${graphqlEndpoints.graphqlApiUrl}</li>
         ${server.isDevelopment ? 
-            `<li>or you can use <a href="${fullHostUrl}${fullGraphiql}">GraphiQL</a></li>
-            <li>or you can try REST API:<ul>
+            `<li>and you can comfortably test it in <a href="${fullHostUrl}${graphqlEndpoints.graphqlApiUrl}">GraphiQL</a></li>
+            <li>or you can try testing REST API:<ul>
                 <li><a href="${fullHostUrl}${fullRestGet}">${fullRestGet}</a></li>
                 <li><a href="${fullHostUrl}${fullRestUpdate}">${fullRestUpdate}</a></li>
                 <li><a href="${fullHostUrl}${fullRestError}">${fullRestError}</a></li></ul>`
