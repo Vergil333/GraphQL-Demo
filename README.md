@@ -47,6 +47,50 @@ in Windows replace `export` by `SET`.
 `npx prisma migrate up --experimental`  
 ---
 
+## Example queries  
+Queries
+```
+   # Get a single coin by id
+   query Coin($cg_id: String) {
+     coin(cg_id: $cg_id) {
+       cg_id
+       name
+       symbol
+     }
+   }
+   
+   # Get a set of coins by partial match in name
+   query Coins($name: String) {
+     coins(name: $name) {
+       cg_id
+       name
+       symbol
+     }
+   }
+   
+   # Create a new coin
+   mutation CreateCoin($input: NewCoin!) {
+     createCoin(input: $input) {
+       cg_id
+       name
+       symbol
+     }
+   }
+```
+Variables
+```
+{
+  "cg_id": "m2-coin",
+  "name": "very",
+  "input": {
+    "cg_id": "m2-coinX",
+    "name": "My very own M2-coin!",
+    "symbol": "m2-coinX"
+  }
+}
+```
+
+---
 ## Building project  
 These are steps I had to take to create this project.
 
